@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 REPO=nikosgavalas.github.io
-URL=https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/nikosgavalas
+URL=https://$GH_USERNAME:$GH_TOKEN@github.com/nikosgavalas
 
 cleanup() {
     CODE=$?
