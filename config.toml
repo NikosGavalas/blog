@@ -1,0 +1,31 @@
+baseURL = "https://nickgavalas.com"
+languageCode = "en-us"
+title = "Nick Gavalas"
+theme = "xmin"
+#googleAnalytics = "UA-122370931-1"
+
+[permalinks]
+    posts = "/:title/"
+
+[[menu.main]]
+    name = "posts"
+    url = "/"
+    weight = 1
+[[menu.main]]
+    name = "about"
+    url = "/about/"
+    weight = 2
+#[[menu.main]]
+#    name = "Categories"
+#    url = "/categories/"
+#    weight = 3
+[[menu.main]]
+    name = "tags"
+    url = "/tags/"
+    weight = 4
+#[[menu.main]]
+#    name = "Subscribe"
+#    url = "/index.xml"
+
+[params]
+    footer = "&copy; [Nick Gavalas](https://nickgavalas.com) 2018-2019 | [Github](https://github.com/NikosGavalas) | [Linkedin](https://linkedin.com/in/NikosGavalas) "
