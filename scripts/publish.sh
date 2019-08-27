@@ -23,6 +23,7 @@ hugo version
 hugo
 rsync -av public/* $REPO/
 cd $REPO
+echo "nickgavalas.com" > CNAME
 git add .
 git commit -m "built from $SHA"
 
