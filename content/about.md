@@ -11,7 +11,6 @@ I also enjoy drumming and astrophotography.
 
 I'd be happy to talk about all these, contact links are below.
 
-<br>
 -- Nick Gavalas<br><br>
 github: [@nikosgavalas](https://github.com/NikosGavalas)<br>
 linkedin: [@nikosgavalas](https://www.linkedin.com/in/nikosgavalas/)<br>
