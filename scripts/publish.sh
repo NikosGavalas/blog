@@ -3,14 +3,6 @@
 REPO=nikosgavalas.github.io
 URL=https://$GH_USERNAME:$GH_TOKEN@github.com/nikosgavalas
 
-cleanup() {
-    CODE=$?
-    rm -rf $HOME/ericchiang.github.io
-    exit $CODE
-}
-
-trap cleanup EXIT
-
 SHA=$( git rev-parse HEAD )
 
 #git clone ${URL}/${REPO}.git $REPO
@@ -21,6 +13,7 @@ hugo version
 hugo
 cd $REPO
 
+git checkout master
 git config user.email "$GH_EMAIL"
 git config user.name "$GH_USERNAME"
 git add .
