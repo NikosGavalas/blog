@@ -13,13 +13,16 @@ trap cleanup EXIT
 
 SHA=$( git rev-parse HEAD )
 
-git clone ${URL}/${REPO}.git $REPO
+#git clone ${URL}/${REPO}.git $REPO
 rm -r $REPO/*
 ls -al $REPO
 
 hugo version
 hugo
 cd $REPO
+
+git config user.email "$GH_EMAIL"
+git config user.name "$GH_USERNAME"
 git add .
 git commit -m "built from $SHA"
 
