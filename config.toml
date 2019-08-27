@@ -3,7 +3,6 @@ languageCode = "en-us"
 title = "Nick Gavalas"
 theme = "xmin"
 googleAnalytics = "UA-122370931-1"
-publishDir = "nikosgavalas.github.io"
 
 [permalinks]
     posts = "/:title/"

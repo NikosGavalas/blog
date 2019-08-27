@@ -1,22 +1,29 @@
 #!/bin/bash -e
 
-REPO=nikosgavalas.github.io
-URL=https://$GH_USERNAME:$GH_TOKEN@github.com/nikosgavalas
+cleanup() {
+    CODE=$?
+    rm -rf $HOME/nikosgavalas.github.io
+    exit $CODE
+}
+
+trap cleanup EXIT
 
 SHA=$( git rev-parse HEAD )
 
-#git clone ${URL}/${REPO}.git $REPO
+REPO=$HOME/nikosgavalas.github.io
+git clone https://$GH_USERNAME:$GH_TOKEN@github.com/nikosgavalas/nikosgavalas.github.io.git $REPO
 rm -r $REPO/*
 ls -al $REPO
 
+if [ -d public ]; then
+    rm -r public
+fi
+
 hugo version
 hugo
+rsync -av public/* $REPO/
 cd $REPO
-
-git checkout master
-git config user.email "$GH_EMAIL"
-git config user.name "$GH_USERNAME"
 git add .
 git commit -m "built from $SHA"
 
-git push ${URL}/${REPO}.git
+git push https://$GH_USERNAME:$GH_TOKEN@github.com/nikosgavalas/nikosgavalas.github.io.git
