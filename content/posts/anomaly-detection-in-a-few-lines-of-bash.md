@@ -71,10 +71,10 @@ So let's go ahead and fetch the dataset, then implement the algorithm with awk.
 
 ### Fetch and prepare the dataset
 
-The dataset is available [here](http://kdd.ics.uci.edu/databases/kddcup99/kddcup99.html). I will be using the 10 percent version.
+The dataset is available [here](http://kdd.ics.uci.edu/databases/kddcup99/kddcup99.html). I will be using the 10 percent version, and only the HTTP protocol.
 
-We'll use curl for the GET request, pipe it into zcat (because it is gzipped), and then use awk to filter out most features,
-keeping only 4 columns: `duration`, `src_bytes` and `dst_bytes`, plus the `label`. We also edit the label to be `1` in case of
+We'll use curl for the GET request, pipe it into zcat (because it is gzipped), and then use awk to keep only the HTTP rows, and filter out most features,
+keeping only the 4 most important columns: `duration`, `src_bytes` and `dst_bytes`, plus the `label`. We also edit the label to be `1` in case of
 anomaly, or `0`, in case of normal observation.
 
 ```bash
