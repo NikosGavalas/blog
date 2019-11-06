@@ -1,5 +1,5 @@
 ---
-title: "Anomaly Detection on data streams, in a few lines of Bash"
+title: "Anomaly Detection on data streams, in one line of Bash"
 date: "2019-11-02"
 categories:
     - algorithms
@@ -25,8 +25,8 @@ out to be the most robust on the real-world dataset I had used (the popular KDD 
 This algorithm was by far the fastest, and was yielding ROC AUC scores of over 0.97, which is pretty good for an
 algorithm that does only one pass on the data.
 
-I thought it would be fun to implement it in one line of Bash. While this is technically feasible, it would look very compressed
-and ugly, so I expanded it in a few more lines :) .
+I thought it would be fun to implement it in one line of Bash. While this is technically feasible, the awk script would look very compressed
+and ugly, so I expanded it in a few more lines :) . But altogether, it is one line.
 
 ### Background
 
@@ -55,7 +55,7 @@ parameters (MLE):
 Then, in the evaluation phase, given a new example \\( x \\), we compute:
 
 \\[ p(x) = \prod\_{i=1}^{d}{ \frac{1}{\sqrt{2\pi}\sigma_i} \exp\Big(- \frac{(x_i-\mu_i)^2}{2\sigma_i^2}\Big) } \\]
-and we flag \\(x\\) as anomaly is the value of \\( p(x) \\) is smaller than a threshold value \\(\epsilon\\) (hyperparameter).
+and we flag \\(x\\) as anomaly if the value of \\( p(x) \\) is smaller than a threshold value \\(\epsilon\\) (hyperparameter).
 
 Now here is the **imporant part**. How will we compute these values incrementally?
 
@@ -189,7 +189,7 @@ $ awk -f gauss.awk  http.csv | python3 auroc.py
 
 , and this prints the score, which is `0.9762313543238387`, a pretty good value.
 
-Last but not least, we can even choose a threshold and to start flagging the values. This is what an anomaly detector actually does. What's the
+Last but not least, we can even choose a threshold and start flagging the values. This is what an anomaly detector actually does. What's the
 intuition behind this? Since the scores are nothing more than the probability of the observation in the Gaussian distribution (the model),
 we will be flagging the value as anomaly, if this score is lower than a particular threshold, meaning that it is having a low probability
 of occurring.
@@ -206,13 +206,24 @@ else
 , so that it prints `1` if the score is lower than the threshold, or `0` if is not, along with the actual label. You can now calculate the F1 score if
 you want with some `grep`s of the output.
 
-So there you go, one pass on the data and a few lines of awk are enough to handle many cases of spotting outliers in datasets.
+### Putting it all together
+
+Now let's glue everything together in one line:
+
+```bash
+$ curl -s $URL | zcat | awk 'BEGIN{ FS=","; OFS="," } { LABEL=($NF=="normal." ? 0 : 1); if($3 == "http") print $1, $5, $6, LABEL }' | awk -f gauss.awk 2> /dev/null | python3 auroc.py
+0.9762313543238387
+```
+
+I got rid of the `http.csv` file and piped the output of the first awk directly into the second one, and I also redirected the stderr of the second awk to `/dev/null` to silence the warnings, so that we can get a clean output in the terminal.
+
+So there you go, one pass on the data with a few lines of awk are enough to handle many cases of spotting outliers in datasets.
 
 As always, for any questions or suggestions, send me an email.
 
 ### Sidenote: Big Data Frameworks
 
-This algorithm can be implemented in a Big Data framework (Apache Spark, Hadoop, Flink, whatever...) in a very straightforward way, with the functional
+This algorithm can be implemented in any Big Data framework (Apache Spark, Hadoop, Flink, whatever...) in a very straightforward way, with the functional
 operators `map` and `reduce`. Assume that our training data are \\( n \\) d-dimensional
 vectors \\( x^{(j)} = [x_1^{(j)}, x_2^{(j)}, \ldots, x_d^{(j)}]^T, j \in [1, \ldots, n] \\). 
 Then the values of vectors \\( \mu \\) and \\( \sigma^2 \\) can be computed by:
@@ -224,3 +235,7 @@ dataSet
   .reduce { (x1, x2) => (x1._1 + x2._1, x1._2 + x2._2, x1._3 + x2._3) }
   .collect()
 ```
+
+### References
+
+This simple Gaussian model is presented in the great introductory course of [Andrew Ng on Coursera](https://www.coursera.org/learn/machine-learning). If you are interested in Machine Learning, I believe there is no better introductory course on the Internet than this one.
