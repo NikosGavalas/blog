@@ -8,7 +8,7 @@ I am currently employed as a Software Engineer (DevOps) in Athens, Greece.
 My interests include but are not limited to Big Data technologies, DevOps, Embedded Systems, Algorithms... really
 anything related to programming, systems, maths.
 
-I also enjoy drumming and astronomy.
+I also enjoy drumming, rock climbing and astronomy.
 
 I'd be happy to talk about all these, contact links are below.
 
